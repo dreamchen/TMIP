@@ -11,7 +11,7 @@
     <meta charset="utf-8"/>
     <base href="<%=basePath%>">
     <title>应用程序异常 (500)</title>
-
+<!--  -->
     <script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
     <style type="text/css">
         body {
