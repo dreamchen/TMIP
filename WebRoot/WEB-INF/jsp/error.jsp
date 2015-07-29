@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8"/>
     <base href="<%=basePath%>">
     <title>应用程序异常 (500)</title>
