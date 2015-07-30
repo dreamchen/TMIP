@@ -7,11 +7,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--  GitHub Test  -->
     <meta charset="utf-8"/>
     <base href="<%=basePath%>">
     <title>应用程序异常 (500)</title>
-<!--  -->
+
     <script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
     <style type="text/css">
         body {
@@ -43,7 +42,7 @@
     <h1>应用程序异常</h1>
 
     <p>抱歉！您访问的页面出现异常，请稍后重试或联系管理员。</p>
-    <p>sorry, the page is not available, please contact with the administrator.aaaaaaaaaaaaa</p>
+
     <p><a href="javascript:showErr();">详 情</a>
         <a href="javascript:history.back(-1)">返 回</a>
     </p>
