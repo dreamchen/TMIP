@@ -103,6 +103,13 @@
 		where 
 			ZD_ID = #{ZD_ID}
 	</delete>
-
+	
+	<!-- 根据编码查询字典所有子项 (不包含主项'_%')-->
+	<select id="findDictListByBM" parameterType="pd" resultType="pd">
+		select * from 
+			SYS_DICTIONARIES 
+		where P_BM LIKE CONCAT(CONCAT('', #{P_BM}),'_%')
+	</select>
+	
 
 </mapper>
