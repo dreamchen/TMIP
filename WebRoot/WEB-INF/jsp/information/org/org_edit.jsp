@@ -52,6 +52,18 @@
 			$("#CODE").focus();
 			return false;
 		}
+		if ($("#DEFAULTONE").val() == "") {
+
+                $("#DEFAULTONE").tips({
+                    side: 3,
+                    msg: '选择机构类型',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+
+                $("#DEFAULTONE").focus();
+                return false;
+            }
 // 		if($("#PCODE").val()==""){
 // 			$("#PCODE").tips({
 // 				side:3,
@@ -252,6 +264,17 @@
 <!-- 				<td style="width:70px;text-align: right;padding-top: 13px;">级别:</td> -->
 <!-- 				<td><input type="number" name="CLASS" id="CLASS" value="${pd.CLASS}" maxlength="32" placeholder="这里输入级别" title="级别"/></td> -->
 <!-- 			</tr> -->
+			<tr>
+				<td style="width:70px;text-align: right;padding-top: 13px;">机构类型:</td>
+				<td>
+					<select class="chzn-select" name="DEFAULTONE" id="DEFAULTONE" data-placeholder="请选择机构类型">
+						<option value=""></option>
+						<c:forEach items="${dictList }" var="var">
+							<option value="${var.ZD_ID }" <c:if test="${var.ZD_ID == pd.DEFAULTONE }">selected</c:if>>${var.NAME }</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
 			<tr>
 				<td style="width:70px;text-align: right;padding-top: 13px;">顺序:</td>
 				<td><input type="number" name="ORDERS" id="ORDERS" value="${pd.ORDERS}" maxlength="32" placeholder="这里输入顺序" title="顺序"/></td>

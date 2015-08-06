@@ -1,12 +1,21 @@
 package com.tienn.controller.system.user;
 
-import com.tienn.controller.base.BaseController;
-import com.tienn.entity.Page;
-import com.tienn.entity.system.Role;
-import com.tienn.service.system.menu.MenuService;
-import com.tienn.service.system.role.RoleService;
-import com.tienn.service.system.user.UserService;
-import com.tienn.util.*;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;
@@ -21,12 +30,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.tienn.controller.base.BaseController;
+import com.tienn.entity.Page;
+import com.tienn.entity.system.Role;
+import com.tienn.entity.system.User;
+import com.tienn.service.information.org.OrgService;
+import com.tienn.service.system.dictionaries.DictionariesService;
+import com.tienn.service.system.menu.MenuService;
+import com.tienn.service.system.role.RoleService;
+import com.tienn.service.system.user.UserService;
+import com.tienn.util.AppUtil;
+import com.tienn.util.Const;
+import com.tienn.util.FileDownload;
+import com.tienn.util.FileUpload;
+import com.tienn.util.GetPinyin;
+import com.tienn.util.Jurisdiction;
+import com.tienn.util.ObjectExcelRead;
+import com.tienn.util.ObjectExcelView;
+import com.tienn.util.PageData;
+import com.tienn.util.PathUtil;
+import com.tienn.util.Tools;
 
 /**
  * 类名称：UserController
@@ -45,6 +68,10 @@ public class UserController extends BaseController {
     private RoleService roleService;
     @Resource(name = "menuService")
     private MenuService menuService;
+    @Resource(name = "orgService")
+    private OrgService orgService;
+    @Resource(name = "dictionariesService")
+    private DictionariesService dictionariesService;
 
 
     /**
@@ -182,11 +209,28 @@ public class UserController extends BaseController {
 
         List<Role> roleList = roleService.listAllERRoles();            //列出所有二级角色
         pd = userService.findByUiId(pd);                            //根据ID读取
+        
+        pd.put("P_BM", "GW");//查询岗位
+        List<PageData> dictList = dictionariesService.findDictListByBM(pd);
+        
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        User user = (User)session.getAttribute(Const.SESSION_USER);
+        String userDept = user.getDEPT();
+        pd.put("ORG_ID", userDept);
+       
+        List<PageData> szdList = orgService.takeOrgTreeByORGID(pd);
+        JSONArray arr = JSONArray.fromObject(szdList);
+        String json = arr.toString();
+        json = json.replaceAll("ORG_ID", "id").replaceAll("NAME", "name").replaceAll("P_ID", "pId");
+        System.out.println(json);
+        mv.addObject("zTreeNodes",json);
+        
         mv.setViewName("system/user/user_edit");
         mv.addObject("msg", "editU");
         mv.addObject("pd", pd);
         mv.addObject("roleList", roleList);
-
+        mv.addObject("dictList", dictList);
         return mv;
     }
 
@@ -201,18 +245,35 @@ public class UserController extends BaseController {
         List<Role> roleList;
 
         roleList = roleService.listAllERRoles();            //列出所有二级角色
+        
+        pd.put("P_BM", "GW");//查询岗位
+        List<PageData> dictList = dictionariesService.findDictListByBM(pd);
 
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        User user = (User)session.getAttribute(Const.SESSION_USER);
+        String userDept = user.getDEPT();
+        pd.put("ORG_ID", userDept);
+       
+        List<PageData> szdList = orgService.takeOrgTreeByORGID(pd);
+        JSONArray arr = JSONArray.fromObject(szdList);
+        String json = arr.toString();
+        json = json.replaceAll("ORG_ID", "id").replaceAll("NAME", "name").replaceAll("P_ID", "pId");
+        System.out.println(json);
+        mv.addObject("zTreeNodes",json);
+        
         mv.setViewName("system/user/user_edit");
         mv.addObject("msg", "saveU");
         mv.addObject("pd", pd);
         mv.addObject("roleList", roleList);
-
+        mv.addObject("dictList", dictList);
         return mv;
     }
 
     /**
      * 显示用户列表(用户组)
      */
+    List<String> orgs;
     @RequestMapping(value = "/listUsers")
     public ModelAndView listUsers(Page page) throws Exception {
         ModelAndView mv = this.getModelAndView();
@@ -224,6 +285,16 @@ public class UserController extends BaseController {
         if (null != USERNAME && !"".equals(USERNAME)) {
             USERNAME = USERNAME.trim();
             pd.put("USERNAME", USERNAME);
+        }
+        
+        String ORG_ID = pd.getString("DEPT");
+        if (null != ORG_ID && !"".equals(ORG_ID)) {
+        	ORG_ID = ORG_ID.trim();
+        	//递归查询所有子节点id
+        	orgs=new ArrayList<String>();
+        	orgs.add(ORG_ID);
+        	takeAllSonId(ORG_ID);
+        	pd.put("DEPT", orgs);
         }
 
         String lastLoginStart = pd.getString("lastLoginStart");
@@ -239,7 +310,11 @@ public class UserController extends BaseController {
         }
 
         page.setPd(pd);
+//        List<PageData> varList = orgService.dictlistPage(page);
         List<PageData> userList = userService.listPdPageUser(page);            //列出用户列表
+        //递归查询所有用户
+        
+        
         List<Role> roleList = roleService.listAllERRoles();                        //列出所有二级角色
 
         mv.setViewName("system/user/user_list");
@@ -249,6 +324,55 @@ public class UserController extends BaseController {
         mv.addObject(Const.SESSION_QX, this.getHC());    //按钮权限
         return mv;
     }
+    
+    /**
+     * 递归查询节点下的所有子节点
+     * @param ORG_ID
+     * @throws Exception
+     */
+    public void takeAllSonId(String ORG_ID) throws Exception{
+    	List<PageData> listSonId = orgService.selectSonOrgID(ORG_ID);
+    	for (PageData pdOrgId : listSonId) {
+    		orgs.add(pdOrgId.getString("ORG_ID"));
+    		takeAllSonId(pdOrgId.getString("ORG_ID"));
+		}
+    }
+    
+//    /**
+//     * 递归查询当前节点的根节点
+//     * @param ORG_ID
+//     * @throws Exception
+//     */
+//    public void selectRootByID(String ORG_ID) throws Exception{
+//    	List<PageData> listSonId = orgService.selectRootByID(ORG_ID);
+//    	for (PageData pdOrgId : listSonId) {
+//    		orgs.add(pdOrgId.getString("ORG_ID"));
+//    		takeAllSonId(pdOrgId.getString("ORG_ID"));
+//		}
+//    }
+	
+	public List<PageData> createUserTree(List<PageData> userList,String deptid) throws Exception{
+		List<PageData> jsonList = new ArrayList<PageData>();
+		Page jsonData =new Page();
+		deptid = null!=deptid?deptid:"0"; //避免deptid为null
+		for (PageData userInf : userList) {
+//			if(deptid.equals(userInf.get("DEPT"))){
+				jsonData =new Page();
+				List<PageData> listSonId = orgService.selectSonOrgID(userInf.get("DEPT"));
+				for (PageData orgId : listSonId) {
+					PageData pd =new PageData();
+					pd.put("DEPT", orgId);
+					jsonData.setPd(pd);
+					List<PageData> listU =userService.listPdPageUser(jsonData);
+					for (PageData u : listU) {
+						jsonList.add(jsonData.getPd());
+						createUserTree(listU, orgId.getString("ORG_ID"));
+					}
+//				}
+			}
+		}
+		return jsonList;
+	}
 
 
     /**
@@ -321,6 +445,51 @@ public class UserController extends BaseController {
     //===================================================================================================
 
 
+    /**
+     * zTree多级别树页面
+     */
+    @RequestMapping(value = "/userTree")
+    public ModelAndView userTree() throws Exception {
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        
+        Subject currentUser = SecurityUtils.getSubject();
+        Session session = currentUser.getSession();
+        User user = (User)session.getAttribute(Const.SESSION_USER);
+        String userDept = user.getDEPT();
+        pd.put("ORG_ID", userDept);
+       
+        List<PageData> szdList = orgService.takeOrgTreeByORGID(pd);
+       /* //根据所有园区查找教育类的，并且根据ORG_ID查询所属班级信息
+        List<PageData> resultList =new ArrayList<PageData>();
+        List<PageData> listClass;
+        for (PageData pdata : szdList) {
+			if (null!=pdata.getString("DEFAULTONE")&&pdata.getString("DEFAULTONE").equals("7165f8defb8b4077bd9fd5e68a53b4e4")) {
+				resultList.add(pdata);
+				//以上为教育类的机构数，也就是只显示园区信息，操作半截维护页面
+				
+				//以下为增加班级至树型结构，操作儿童列表维护页面
+				listClass = orgService.listClassByOrgId(pdata.getString("ORG_ID"));
+				for (PageData pdClass : listClass) {
+					resultList.add(pdClass);
+				}
+			}
+		}
+        JSONArray arr = JSONArray.fromObject(resultList);*/
+        JSONArray arr = JSONArray.fromObject(szdList);
+        String json = arr.toString();
+        json = json.replaceAll("ORG_ID", "id").replaceAll("NAME", "name").replaceAll("P_ID", "pId");
+        System.out.println(json);
+        json = json.replaceAll("CLASSINFO_ID", "id").replaceAll("NAME", "name").replaceAll("KINDERGARTEN_ID", "pId");//将班级信息加入至机构树
+        mv.addObject("zTreeNodes",json);
+        System.out.println(json);
+        mv.setViewName("system/user/userTree");
+//        mv.setViewName("system/tools/selectTree");
+        mv.addObject("pd", pd);
+        return mv;
+    }
+    
     /*
      * 导出用户信息到EXCEL
      * @return

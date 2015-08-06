@@ -42,7 +42,7 @@
                                        value="${pd.lastLoginEnd}" type="text" data-date-format="yyyy-mm-dd"
                                        readonly="readonly" style="width:88px;" placeholder="结束日期" title="最近登录结束"/></td>
                             <td style="vertical-align:top;">
-                                <select class="chzn-select" name="ROLE_ID" id="role_id" data-placeholder="请选择职位"
+                                <select class="chzn-select" name="ROLE_ID" id="role_id" data-placeholder="请选择角色"
                                         style="vertical-align:top;width: 120px;">
                                     <option value=""></option>
                                     <option value="">全部</option>
@@ -87,7 +87,7 @@
                             <th>编号</th>
                             <th>用户名</th>
                             <th>姓名</th>
-                            <th>职位</th>
+                            <th>角色</th>
                             <th><i class="icon-envelope"></i>邮箱</th>
                             <th><i class="icon-time hidden-phone"></i>最近登录</th>
                             <th>上次登录IP</th>
@@ -296,8 +296,8 @@
         diag.Drag = true;
         diag.Title = "新增";
         diag.URL = '<%=basePath%>user/goAddU.do';
-        diag.Width = 225;
-        diag.Height = 415;
+        diag.Width = 650;
+        diag.Height = 450;
         diag.CancelEvent = function () { //关闭事件
             if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
                 if ('${page.currentPage}' == '0') {
@@ -319,8 +319,8 @@
         diag.Drag = true;
         diag.Title = "资料";
         diag.URL = '<%=basePath%>user/goEditU.do?USER_ID=' + user_id;
-        diag.Width = 225;
-        diag.Height = 415;
+        diag.Width = 650;
+        diag.Height = 450;
         diag.CancelEvent = function () { //关闭事件
             if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
                 nextPage(${page.currentPage});

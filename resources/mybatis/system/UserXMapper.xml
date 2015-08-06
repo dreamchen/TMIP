@@ -57,7 +57,18 @@
         BZ = #{BZ},
         EMAIL = #{EMAIL},
         NUMBER = #{NUMBER},
-        PHONE = #{PHONE}
+        PHONE = #{PHONE},
+        NICKNAME=#{NICKNAME},
+		GENDER=#{GENDER},
+		QQ=#{QQ},
+		WECHAT=#{WECHAT},
+		WORKTIME=#{WORKTIME},
+		ISSECURITY=#{ISSECURITY},
+		REMARK=#{REMARK},
+		ISDELETE=#{ISDELETE},
+		JOBS=#{JOBS},
+		OFFICPHONE=#{OFFICPHONE},
+		DEPT=#{DEPT}
         <if test="PASSWORD != null and PASSWORD != ''">
             ,PASSWORD = #{PASSWORD}
         </if>
@@ -68,24 +79,36 @@
     <!-- 通过user_id获取数据 -->
     <select id="findByUiId" parameterType="pd" resultType="pd" useCache="false">
 		select 
-			USER_ID,
-			USERNAME,
-			PASSWORD,
-			NAME,
-			RIGHTS,
-			ROLE_ID,
-			LAST_LOGIN,
-			IP,
-			STATUS,
-			BZ,
-			SKIN,
-			EMAIL,
-			NUMBER,
-			PHONE
+			a.USER_ID,
+			a.USERNAME,
+			a.PASSWORD,
+			a.NAME,
+			a.RIGHTS,
+			a.ROLE_ID,
+			a.LAST_LOGIN,
+			a.IP,
+			a.STATUS,
+			a.BZ,
+			a.SKIN,
+			a.EMAIL,
+			a.NUMBER,
+			a.PHONE,
+			a.NICKNAME,
+			a.GENDER,
+			a.QQ,
+			a.WECHAT,
+			a.WORKTIME,
+			a.ISSECURITY,
+			a.REMARK,
+			a.ISDELETE,
+			a.JOBS,
+			a.OFFICPHONE,
+			a.DEPT,
+			b.NAME as ORGNAME
 		from 
-			SYS_USER
-		where 
-			USER_ID = #{USER_ID}
+			SYS_USER a,tb_org b 
+		where  a.DEPT=b.ORG_ID 
+			and USER_ID = #{USER_ID}
 	</select>
 
     <!-- 通过邮箱获取数据 -->
@@ -104,7 +127,18 @@
         SKIN,
         EMAIL,
         NUMBER,
-        PHONE
+        PHONE,
+        NICKNAME,
+		GENDER,
+		QQ,
+		WECHAT,
+		WORKTIME,
+		ISSECURITY,
+		REMARK,
+		ISDELETE,
+		JOBS,
+		OFFICPHONE,
+		DEPT
         from
         SYS_USER
         where
@@ -130,7 +164,18 @@
         SKIN,
         EMAIL,
         NUMBER,
-        PHONE
+        PHONE,
+        NICKNAME,
+		GENDER,
+		QQ,
+		WECHAT,
+		WORKTIME,
+		ISSECURITY,
+		REMARK,
+		ISDELETE,
+		JOBS,
+		OFFICPHONE,
+		DEPT
         from
         SYS_USER
         where
@@ -156,7 +201,18 @@
 			SKIN,
 			EMAIL,
 			NUMBER,
-			PHONE
+			PHONE,
+			NICKNAME,
+			GENDER,
+			QQ,
+			WECHAT,
+			WORKTIME,
+			ISSECURITY,
+			REMARK,
+			ISDELETE,
+			JOBS,
+			OFFICPHONE,
+			DEPT
 		from 
 			SYS_USER
 		where 
@@ -179,7 +235,18 @@
 			SKIN,
 			EMAIL,
 			NUMBER,
-			PHONE
+			PHONE,
+			NICKNAME,
+			GENDER,
+			QQ,
+			WECHAT,
+			WORKTIME,
+			ISSECURITY,
+			REMARK,
+			ISDELETE,
+			JOBS,
+			OFFICPHONE,
+			DEPT
 		) values (
 			#{USER_ID},
 			#{USERNAME},
@@ -194,7 +261,18 @@
 			#{SKIN},
 			#{EMAIL},
 			#{NUMBER},
-			#{PHONE}
+			#{PHONE},
+			#{NICKNAME},
+			#{GENDER},
+			#{QQ},
+			#{WECHAT},
+			#{WORKTIME},
+			#{ISSECURITY},
+			#{REMARK},
+			#{ISDELETE},
+			#{JOBS},
+			#{OFFICPHONE},
+			#{DEPT}
 		)
 	</insert>
     <!-- 用户列表(用户组) -->
@@ -208,12 +286,33 @@
         u.EMAIL,
         u.NUMBER,
         u.PHONE,
+        u.NICKNAME,
+		u.GENDER,
+		u.QQ,
+		u.WECHAT,
+		u.WORKTIME,
+		u.ISSECURITY,
+		u.REMARK,
+		u.ISDELETE,
+		u.JOBS,
+		u.OFFICPHONE,
+		u.DEPT,
         r.ROLE_ID,
         r.ROLE_NAME
         from SYS_USER u, SYS_ROLE r
         where u.ROLE_ID = r.ROLE_ID
-        and u.USERNAME != 'admin'
-        and (r.ROLE_ID != '7' and r.PARENT_ID != '7')
+        <if test="pd.DEPT != null">
+       		and u.DEPT in 
+        	<foreach item="item" index="" collection="pd.DEPT" open="(" separator="," close=")">
+        	'${item}'
+<!--              	<foreach collection="item" item="var"> -->
+<!-- 					''         		 -->
+<!--              	</foreach> -->
+        	</foreach>
+<!--          	and u.DEPT in (#{pd.DEPT}) -->
+        </if>
+<!--         and u.USERNAME != 'admin' -->
+<!--         and (r.ROLE_ID != '7' and r.PARENT_ID != '7') -->
         <if test="pd.USERNAME != null and pd.USERNAME != ''"><!-- 关键词检索 -->
             and
             (
@@ -251,6 +350,17 @@
         u.EMAIL,
         u.NUMBER,
         u.PHONE,
+        u.NICKNAME,
+		u.GENDER,
+		u.QQ,
+		u.WECHAT,
+		u.WORKTIME,
+		u.ISSECURITY,
+		u.REMARK,
+		u.ISDELETE,
+		u.JOBS,
+		u.OFFICPHONE,
+		u.DEPT,
         r.ROLE_ID,
         r.ROLE_NAME
         from SYS_USER u, SYS_ROLE r

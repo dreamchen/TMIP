@@ -20,7 +20,7 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>org/toAdd.do?P_ID='+P_ID;
+			 diag.URL = '<%=basePath%>org/toAdd.do?P_ID='+P_ID+'&P_BM=JGLX';
 			 diag.Width = 750;
 			 diag.Height = 500;
 			 diag.CancelEvent = function(){ //关闭事件
@@ -44,7 +44,7 @@
 		   	 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>org/toEdit.do?ORG_ID='+ORG_ID;
+			 diag.URL = '<%=basePath%>org/toEdit.do?ORG_ID='+ORG_ID+'&P_BM=JGLX';
 			 diag.Width = 750;
 			 diag.Height = 500;
 			 diag.CancelEvent = function(){ //关闭事件
@@ -146,7 +146,6 @@
 				</thead>
 										
 				<tbody>
-					
 				<!-- 开始循环 -->	
 				<c:choose>
 					<c:when test="${not empty varList}">

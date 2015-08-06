@@ -9,6 +9,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tienn.controller.base.BaseController;
 import com.tienn.entity.Page;
 import com.tienn.service.information.org.OrgService;
+import com.tienn.service.system.dictionaries.DictionariesService;
 import com.tienn.util.AppUtil;
 import com.tienn.util.PageData;
 
@@ -32,6 +36,8 @@ public class OrgController extends BaseController {
 	String menuUrl = "org.do"; //菜单地址(权限用)
 	@Resource(name="orgService")
 	private OrgService orgService;
+	@Resource(name = "dictionariesService")
+    private DictionariesService dictionariesService;
 	
 	
 	/**
@@ -120,7 +126,7 @@ public class OrgController extends BaseController {
 		mv.addObject("varList", varList);
 		mv.addObject("varsList", szdList);
 		mv.addObject("pd", pd);
-		System.out.println(1111111);
+		
 		return mv;
 	}
 	
@@ -142,6 +148,7 @@ public class OrgController extends BaseController {
 		}
 	}
 	
+	
 	/**
 	 * 去新增页面
 	 */
@@ -152,6 +159,8 @@ public class OrgController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		try {
+			List<PageData> dictList = dictionariesService.findDictListByBM(pd);
+			mv.addObject("dictList",dictList);
 			mv.setViewName("information/org/org_edit");
 			mv.addObject("msg", "save");
 			mv.addObject("pd", pd);
@@ -169,12 +178,16 @@ public class OrgController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		List<PageData> dictList = dictionariesService.findDictListByBM(pd);
+		mv.addObject("dictList",dictList);
+		
 		pd = orgService.findById(pd);
 		if(Integer.parseInt(orgService.findCount(pd).get("ZS").toString()) != 0){
 			mv.addObject("msg", "no");
 		}else{
 			mv.addObject("msg", "ok");
 		}
+		
 		mv.setViewName("information/org/org_edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -225,6 +238,50 @@ public class OrgController extends BaseController {
 		map.put("result", errInfo);
 		return AppUtil.returnObject(new PageData(), map);
 		
+	}
+	
+	/**
+	 * 
+	 * getOrgTByAll 
+	 * @Description:机构列表（ConbomTREE）
+	 * @return:JSON 
+	 * @throws Exception 
+	 */
+	@RequestMapping("getOrgTByAll")
+	public @ResponseBody JSON getOrgTByAll() throws Exception{
+		
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		List<PageData> orgList =new ArrayList<PageData>();
+		orgList = orgService.selectOrgTree(pd);
+		
+		JSON json = this.createOrgTree(orgList, "0");
+		System.out.println(json);
+		return json;
+	}
+	
+	
+	public JSON createOrgTree(List<PageData> orgList,String pid) throws Exception{
+		List<PageData> jsonList = new ArrayList<PageData>();
+		PageData jsonData =new PageData();
+		for (PageData orgInf : orgList) {
+			if(pid.equals(orgInf.get("P_ID"))){
+				jsonData =new PageData();
+				jsonData.put("id", orgInf.get("ORG_ID"));
+				jsonData.put("text", orgInf.get("NAME"));
+//				jsonData.put("pid", orgInf.get("P_ID"));
+//				jsonData.put("url", "http://www.baidu.com");
+//				jsonData.put("target", "treeFrame");
+				if ((Integer)orgService.hasSonId(orgInf.get("ORG_ID"))>0) {
+					jsonData.put("state", "open");
+					jsonData.put("children",createOrgTree(orgList,(orgInf.get("ORG_ID")).toString()));
+				}
+				System.out.println(jsonData);
+				jsonList.add(jsonData);
+			}
+		}
+		return JSONArray.fromObject(jsonList);
 	}
 	
 //	/**
