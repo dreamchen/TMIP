@@ -51,6 +51,13 @@ public class DictionariesService {
         dao.delete("DictionariesMapper.delete", pd);
 
     }
+    
+    //根据编码查询所有子项
+    public List<PageData> findDictListByBM(PageData pd) throws Exception {
+        return (List<PageData>) dao.findForList("DictionariesMapper.findDictListByBM", pd);
+
+    }
+    
 
 
 }
