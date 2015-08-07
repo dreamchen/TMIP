@@ -111,5 +111,12 @@
 		where P_BM LIKE CONCAT(CONCAT('', #{P_BM}),'_%')
 	</select>
 	
+	<!-- 根据编码查询字典所有子项 (不包含主项'_%')-->
+	<select id="findDictListByMyBM" parameterType="String" resultType="pd">
+		select zd_id,name,substring_index(p_bm, '_', 1) as bm from 
+			SYS_DICTIONARIES 
+		where P_BM LIKE CONCAT(CONCAT('', #{P_BM}),'_%')
+	</select>
+	
 
 </mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StudentMapper">
+
+
+    <!-- 新增-->
+    <insert id="save" parameterType="pd">
+        insert into TB_STUDENT_INFOSTUDENT(
+    STUDENT_NO,
+    NAME,
+    BIRTHDAY,
+    GENDER,
+    BLOOD_TYPE,
+    ID_CARD_NUMBER,
+    ADDRESS,
+    KINDERGARTEN_ID,
+    CLASS_ID,
+    REMARK,
+    STUDENT_ID
+        ) values (
+    #{STUDENT_NO},
+    #{NAME},
+    #{BIRTHDAY},
+    #{GENDER},
+    #{BLOOD_TYPE},
+    #{ID_CARD_NUMBER},
+    #{ADDRESS},
+    #{KINDERGARTEN_ID},
+    #{CLASS_ID},
+    #{REMARK},
+    #{STUDENT_ID}
+        )
+    </insert>
+
+
+    <!-- 删除-->
+    <delete id="delete" parameterType="pd">
+        delete from TB_STUDENT_INFOSTUDENT
+        where
+    STUDENT_ID = #{STUDENT_ID}
+    </delete>
+
+
+    <!-- 修改 -->
+    <update id="edit" parameterType="pd">
+        update  TB_STUDENT_INFOSTUDENT
+        set
+        STUDENT_NO = #{STUDENT_NO},
+        NAME = #{NAME},
+        BIRTHDAY = #{BIRTHDAY},
+        GENDER = #{GENDER},
+        BLOOD_TYPE = #{BLOOD_TYPE},
+        ID_CARD_NUMBER = #{ID_CARD_NUMBER},
+        ADDRESS = #{ADDRESS},
+        KINDERGARTEN_ID = #{KINDERGARTEN_ID},
+        CLASS_ID = #{CLASS_ID},
+        REMARK = #{REMARK},
+    STUDENT_ID = STUDENT_ID
+        where
+    STUDENT_ID = #{STUDENT_ID}
+    </update>
+
+
+    <!-- 通过ID获取数据 -->
+    <select id="findById" parameterType="pd" resultType="pd">
+        select
+    STUDENT_NO,
+    NAME,
+    BIRTHDAY,
+    GENDER,
+    BLOOD_TYPE,
+    ID_CARD_NUMBER,
+    ADDRESS,
+    KINDERGARTEN_ID,
+    CLASS_ID,
+    REMARK,
+    STUDENT_ID
+        from
+    TB_STUDENT_INFOSTUDENT
+        where
+    STUDENT_ID = #{STUDENT_ID}
+    </select>
+
+
+    <!-- 列表 -->
+    <select id="datalistPage" parameterType="page" resultType="pd">
+       select
+        a.STUDENT_NO,
+        a.NAME,
+        a.BIRTHDAY,
+        b.`NAME` as GENDER,
+        c.`NAME` as BLOOD_TYPE,
+        a.ID_CARD_NUMBER,
+        a.ADDRESS,
+        a.KINDERGARTEN_ID,
+        a.CLASS_ID,
+        a.REMARK,
+        a.STUDENT_ID
+        from
+    TB_STUDENT_INFOSTUDENT a 
+LEFT JOIN sys_dictionaries b on a.gender=b.ZD_ID 
+LEFT JOIN sys_dictionaries c on a.BLOOD_TYPE=c.ZD_ID
+    </select>
+
+    <!-- 列表(全部) -->
+    <select id="listAll" parameterType="pd" resultType="pd">
+       select
+        a.STUDENT_NO,
+        a.NAME,
+        a.BIRTHDAY,
+        b.`NAME` as GENDER,
+        c.`NAME` as BLOOD_TYPE,
+        a.ID_CARD_NUMBER,
+        a.ADDRESS,
+        a.KINDERGARTEN_ID,
+        a.CLASS_ID,
+        a.REMARK,
+        a.STUDENT_ID
+        from
+    TB_STUDENT_INFOSTUDENT a 
+LEFT JOIN sys_dictionaries b on a.gender=b.ZD_ID 
+LEFT JOIN sys_dictionaries c on a.BLOOD_TYPE=c.ZD_ID
+    </select>
+
+    <!-- 批量删除 -->
+    <delete id="deleteAll" parameterType="String">
+        delete from TB_STUDENT_INFOSTUDENT
+        where
+    STUDENT_ID in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+    </delete>
+
+</mapper>

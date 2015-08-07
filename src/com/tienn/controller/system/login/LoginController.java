@@ -118,6 +118,7 @@ public class LoginController extends BaseController {
                         user.setLAST_LOGIN(pd.getString("LAST_LOGIN"));
                         user.setIP(pd.getString("IP"));
                         user.setSTATUS(pd.getString("STATUS"));
+                        user.setDEPT(pd.getString("DEPT"));
                         session.setAttribute(Const.SESSION_USER, user);
                         session.removeAttribute(Const.SESSION_SECURITY_CODE);
 

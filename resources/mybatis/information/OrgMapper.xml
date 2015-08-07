@@ -223,9 +223,58 @@
 		select * from TB_ORG
 	</select>
 	
-	<!-- 查询此节点的子集 -->
+	<!-- 查询此节点的是否有子集 -->
 	<select id="hasSonId" parameterType="String" resultType="int">
 		select count(*) from TB_ORG where P_ID = #{item}
+	</select>
+	<!-- 查询此节点的子集 -->
+	<select id="selectSonOrgID" parameterType="String" resultType="pd">
+		select ORG_ID from TB_ORG where P_ID = #{P_ID}
+	</select>
+	
+	<!-- 查询此节点上一级节点信息-->
+	<select id="findPreORGIDByID" parameterType="String" resultType="pd">
+		select
+				NAME,	
+				CODE,	
+				P_ID,	
+				PCODE,	
+				CLASS,	
+				ORDERS,	
+				CREATEDATE,	
+				PERSONNUM,	
+				LEADER,	
+				ADDRESS,	
+				PHONE,	
+				EMAIL,	
+				URL,	
+				INTRO,	
+				REMARK,	
+				DEFAULTONE,	
+				DEFAULTTWO,	
+				DEFAULTTHREE,	
+				ORG_ID
+				from TB_ORG where ORG_ID =(select P_ID from tb_org where org_ID=#{ORG_ID}) 
+	</select>
+	
+	<!-- 查询节点 -->
+	<select id="listAllParentOrg" parameterType="pd" resultType="pd">
+		select * from TB_ORG where 1=1
+		<if test="ORG_ID != null and ORG_ID != ''">
+			and ORG_ID != #{ORG_ID} 
+		</if>
+<!-- 		where P_ID = '0'  -->
+		order by Orders 
+	</select>
+
+    <select id="listSubOrgByParentId" parameterType="String" resultType="pd">
+		select  * from TB_ORG
+		where P_ID = #{pid} order by Orders 
+	</select>
+	
+	<select id="listClassByOrgId" parameterType="String" resultType="pd">
+		select  * from TB_CLASS_INFOCLASSINFO
+		where KINDERGARTEN_ID = #{ORG_ID} 
 	</select>
 <!-- 自定义结束 -->	
 		

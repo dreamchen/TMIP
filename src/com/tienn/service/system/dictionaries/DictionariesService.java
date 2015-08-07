@@ -58,6 +58,18 @@ public class DictionariesService {
 
     }
     
+    //根据编码查询所有子项
+    public List<PageData> findDictListByBM(String pd) throws Exception {
+        return (List<PageData>) dao.findForList("DictionariesMapper.findDictListByBM", pd);
+
+    }
+    
+    
+  //根据编码查询所有子项
+    public List<PageData> findDictListByMyBM(String P_BM) throws Exception {
+        return (List<PageData>) dao.findForList("DictionariesMapper.findDictListByMyBM", P_BM);
+
+    }
 
 
 }

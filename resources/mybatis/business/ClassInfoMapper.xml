@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ClassInfoMapper">
+
+
+	<!-- 新增 -->
+	<insert id="save" parameterType="pd">
+		insert into TB_CLASS_INFOCLASSINFO(
+		KINDERGARTEN_ID,
+		CLASS_NAME,
+		QUANTITY,
+		MAIN_TEACHER_ID,
+		DIETITIAN_ID,
+		CLASS_TYPE,
+		STATUS,
+		CLASS_BEGIN_TIME,
+		GROWTH_STAGE_BEGIN,
+		GROWTH_STAGE_END,
+		STATUS_CHANGE_TIME,
+		DESCRIPTION,
+		REMARK,
+		CLASSINFO_ID
+		) values (
+		#{KINDERGARTEN_ID},
+		#{CLASS_NAME},
+		#{QUANTITY},
+		#{MAIN_TEACHER_ID},
+		#{DIETITIAN_ID},
+		#{CLASS_TYPE},
+		#{STATUS},
+		#{CLASS_BEGIN_TIME},
+		#{GROWTH_STAGE_BEGIN},
+		#{GROWTH_STAGE_END},
+		#{STATUS_CHANGE_TIME},
+		#{DESCRIPTION},
+		#{REMARK},
+		#{CLASSINFO_ID}
+		)
+	</insert>
+
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="pd">
+		delete from TB_CLASS_INFOCLASSINFO
+		where
+		CLASSINFO_ID = #{CLASSINFO_ID}
+	</delete>
+
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update TB_CLASS_INFOCLASSINFO
+		set
+		KINDERGARTEN_ID = #{KINDERGARTEN_ID},
+		CLASS_NAME = #{CLASS_NAME},
+		QUANTITY = #{QUANTITY},
+		MAIN_TEACHER_ID = #{MAIN_TEACHER_ID},
+		DIETITIAN_ID = #{DIETITIAN_ID},
+		CLASS_TYPE = #{CLASS_TYPE},
+		STATUS = #{STATUS},
+		CLASS_BEGIN_TIME = #{CLASS_BEGIN_TIME},
+		GROWTH_STAGE_BEGIN = #{GROWTH_STAGE_BEGIN},
+		GROWTH_STAGE_END = #{GROWTH_STAGE_END},
+		STATUS_CHANGE_TIME = #{STATUS_CHANGE_TIME},
+		DESCRIPTION = #{DESCRIPTION},
+		REMARK = #{REMARK},
+		CLASSINFO_ID = CLASSINFO_ID
+		where
+		CLASSINFO_ID = #{CLASSINFO_ID}
+	</update>
+
+
+	<!-- 通过学校ID获取学校的数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+		KINDERGARTEN_ID,
+		CLASS_NAME,
+		QUANTITY,
+		MAIN_TEACHER_ID,
+		DIETITIAN_ID,
+		CLASS_TYPE,
+		STATUS,
+		CLASS_BEGIN_TIME,
+		GROWTH_STAGE_BEGIN,
+		GROWTH_STAGE_END,
+		STATUS_CHANGE_TIME,
+		DESCRIPTION,
+		REMARK,
+		CLASSINFO_ID
+		from
+		TB_CLASS_INFOCLASSINFO
+		where
+		CLASSINFO_ID = #{CLASSINFO_ID}
+	</select>
+	
+	<!-- 通过园区ID获取园区所有学校的数据 -->
+	<select id="findByKindergartenId" parameterType="pd" resultType="pd">
+		select
+		KINDERGARTEN_ID,
+		CLASS_NAME,
+		QUANTITY,
+		MAIN_TEACHER_ID,
+		DIETITIAN_ID,
+		CLASS_TYPE,
+		STATUS,
+		CLASS_BEGIN_TIME,
+		GROWTH_STAGE_BEGIN,
+		GROWTH_STAGE_END,
+		STATUS_CHANGE_TIME,
+		DESCRIPTION,
+		REMARK,
+		CLASSINFO_ID
+		from
+		TB_CLASS_INFOCLASSINFO
+		where
+		KINDERGARTEN_ID = #{KINDERGARTEN_ID}
+	</select>
+
+
+	<!-- 列表 -->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		a.KINDERGARTEN_ID,
+		a.CLASS_NAME,
+		a.QUANTITY,
+		a.MAIN_TEACHER_ID,
+		a.DIETITIAN_ID,
+		a.CLASS_TYPE,
+		a.STATUS,
+		a.CLASS_BEGIN_TIME,
+		a.GROWTH_STAGE_BEGIN,
+		a.GROWTH_STAGE_END,
+		a.STATUS_CHANGE_TIME,
+		a.DESCRIPTION,
+		a.REMARK,
+		a.CLASSINFO_ID
+		from
+		TB_CLASS_INFOCLASSINFO a
+	</select>
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		a.KINDERGARTEN_ID,
+		a.CLASS_NAME,
+		a.QUANTITY,
+		a.MAIN_TEACHER_ID,
+		a.DIETITIAN_ID,
+		a.CLASS_TYPE,
+		a.STATUS,
+		a.CLASS_BEGIN_TIME,
+		a.GROWTH_STAGE_BEGIN,
+		a.GROWTH_STAGE_END,
+		a.STATUS_CHANGE_TIME,
+		a.DESCRIPTION,
+		a.REMARK,
+		a.CLASSINFO_ID
+		from
+		TB_CLASS_INFOCLASSINFO a
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from TB_CLASS_INFOCLASSINFO
+		where
+		CLASSINFO_ID in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

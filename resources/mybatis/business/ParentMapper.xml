@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ParentMapper">
+
+
+    <!-- 新增-->
+    <insert id="save" parameterType="pd">
+        insert into TB_PARENT_INFOPARENT(
+    NAME,
+    STUDENT_ID,
+    RELATION,
+    BLOOD_TYPE,
+    GENDER,
+    ID_CARD_NUM,
+    TELEPHONE,
+    REMARK,
+    PARENT_ID
+        ) values (
+    #{NAME},
+    #{STUDENT_ID},
+    #{RELATION},
+    #{BLOOD_TYPE},
+    #{GENDER},
+    #{ID_CARD_NUM},
+    #{TELEPHONE},
+    #{REMARK},
+    #{PARENT_ID}
+        )
+    </insert>
+
+
+    <!-- 删除-->
+    <delete id="delete" parameterType="pd">
+        delete from TB_PARENT_INFOPARENT
+        where
+    PARENT_ID = #{PARENT_ID}
+    </delete>
+
+
+    <!-- 修改 -->
+    <update id="edit" parameterType="pd">
+        update  TB_PARENT_INFOPARENT
+        set
+        NAME = #{NAME},
+        RELATION = #{RELATION},
+        BLOOD_TYPE = #{BLOOD_TYPE},
+        GENDER = #{GENDER},
+        ID_CARD_NUM = #{ID_CARD_NUM},
+        TELEPHONE = #{TELEPHONE},
+        REMARK = #{REMARK},
+    PARENT_ID = PARENT_ID
+        where
+    PARENT_ID = #{PARENT_ID}
+    </update>
+
+
+    <!-- 通过ID获取数据 -->
+    <select id="findById" parameterType="pd" resultType="pd">
+        select
+    NAME,
+    STUDENT_ID,
+    RELATION,
+    BLOOD_TYPE,
+    GENDER,
+    ID_CARD_NUM,
+    TELEPHONE,
+    REMARK,
+    PARENT_ID
+        from
+    TB_PARENT_INFOPARENT
+        where
+    PARENT_ID = #{PARENT_ID}
+    </select>
+
+
+    <!-- 列表 -->
+    <select id="datalistPage" parameterType="page" resultType="pd">
+        select  p.PARENT_ID,
+        p.`NAME`,
+        s.`NAME` as STUDENT_NAME,
+        p.RELATION,
+        d.`NAME` as BLOOD_TYPE, 
+        a.`NAME` as GENDER,
+        p.ID_CARD_NUM,
+        p.TELEPHONE,
+        p.REMARK
+		from tb_parent_infoparent p 
+		LEFT JOIN tb_student_infostudent s on p.STUDENT_ID=s.STUDENT_ID
+		LEFT JOIN sys_dictionaries d on p.BLOOD_TYPE = d.ZD_ID
+		LEFT JOIN sys_dictionaries a on p.GENDER=a.ZD_ID
+		ORDER BY STUDENT_NAME
+    </select>
+
+    <!-- 列表(全部) -->
+    <select id="listAll" parameterType="pd" resultType="pd">
+        select  p.PARENT_ID,
+        p.`NAME`,
+        p.STUDENT_ID,
+        s.`NAME` as STUDENT_NAME,
+        p.RELATION,
+        d.`NAME` as BLOOD_TYPE, 
+        a.`NAME` as GENDER,
+        p.ID_CARD_NUM,
+        p.TELEPHONE,
+        p.REMARK
+		from tb_parent_infoparent p 
+		LEFT JOIN tb_student_infostudent s on p.STUDENT_ID=s.STUDENT_ID
+		LEFT JOIN sys_dictionaries d on p.BLOOD_TYPE = d.ZD_ID
+		LEFT JOIN sys_dictionaries a on p.GENDER=a.ZD_ID
+		ORDER BY STUDENT_NAME
+    </select>
+
+    <!-- 批量删除 -->
+    <delete id="deleteAll" parameterType="String">
+        delete from TB_PARENT_INFOPARENT
+        where
+    PARENT_ID in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+    </delete>
+    
+        <!-- 通过ID获取数据 -->
+    <select id="findByStudentId" parameterType="pd" resultType="pd">
+        select  p.PARENT_ID,
+        p.`NAME`,
+        p.STUDENT_ID,
+        s.`NAME` as STUDENT_NAME,
+        p.RELATION,
+        d.`NAME` as BLOOD_TYPE, 
+        a.`NAME` as GENDER,
+        p.ID_CARD_NUM,
+        p.TELEPHONE,
+        p.REMARK
+		from tb_parent_infoparent p 
+		LEFT JOIN tb_student_infostudent s on p.STUDENT_ID=s.STUDENT_ID
+		LEFT JOIN sys_dictionaries d on p.BLOOD_TYPE = d.ZD_ID
+		LEFT JOIN sys_dictionaries a on p.GENDER=a.ZD_ID
+		where p.STUDENT_ID=#{STUDENT_ID}
+    
+    </select>
+
+</mapper>
