@@ -461,7 +461,7 @@ public class UserController extends BaseController {
         pd.put("ORG_ID", userDept);
        
         List<PageData> szdList = orgService.takeOrgTreeByORGID(pd);
-       /* //根据所有园区查找教育类的，并且根据ORG_ID查询所属班级信息
+      /* //根据所有园区查找教育类的，并且根据ORG_ID查询所属班级信息
         List<PageData> resultList =new ArrayList<PageData>();
         List<PageData> listClass;
         for (PageData pdata : szdList) {
@@ -479,9 +479,9 @@ public class UserController extends BaseController {
         JSONArray arr = JSONArray.fromObject(resultList);*/
         JSONArray arr = JSONArray.fromObject(szdList);
         String json = arr.toString();
-        json = json.replaceAll("ORG_ID", "id").replaceAll("NAME", "name").replaceAll("P_ID", "pId");
+        json = json.replaceAll("ORG_ID", "id").replaceAll("CLASS_NAME", "name").replaceAll("NAME", "name").replaceAll("P_ID", "pId");
         System.out.println(json);
-        json = json.replaceAll("CLASSINFO_ID", "id").replaceAll("NAME", "name").replaceAll("KINDERGARTEN_ID", "pId");//将班级信息加入至机构树
+        json = json.replaceAll("CLASSINFO_ID", "id").replaceAll("KINDERGARTEN_ID", "pId");//将班级信息加入至机构树
         mv.addObject("zTreeNodes",json);
         System.out.println(json);
         mv.setViewName("system/user/userTree");

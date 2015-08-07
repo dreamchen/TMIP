@@ -6,15 +6,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import net.sf.ehcache.hibernate.management.impl.BeanUtils;
-
-import org.codehaus.jackson.map.util.BeanUtil;
 import org.springframework.stereotype.Service;
 
-import com.mysql.jdbc.Util;
 import com.tienn.dao.DaoSupport;
 import com.tienn.entity.Page;
-import com.tienn.entity.system.Menu;
 import com.tienn.util.PageData;
 
 
