@@ -1,10 +1,10 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `TB_PARENT_INFOPARENT`
+-- Table structure for `tb_parent_infoparent`
 -- ----------------------------
-DROP TABLE IF EXISTS `TB_PARENT_INFOPARENT`;
-CREATE TABLE `TB_PARENT_INFOPARENT` (
+DROP TABLE IF EXISTS `tb_parent_infoparent`;
+CREATE TABLE `tb_parent_infoparent` (
 `PARENT_ID` varchar(100) NOT NULL,
     `NAME` varchar(255) DEFAULT NULL COMMENT '家长姓名',
     `STUDENT_ID` varchar(255) DEFAULT NULL COMMENT '被监护人',

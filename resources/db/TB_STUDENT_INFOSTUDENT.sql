@@ -1,10 +1,10 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `TB_STUDENT_INFOSTUDENT`
+-- Table structure for `tb_student_infostudent`
 -- ----------------------------
-DROP TABLE IF EXISTS `TB_STUDENT_INFOSTUDENT`;
-CREATE TABLE `TB_STUDENT_INFOSTUDENT` (
+DROP TABLE IF EXISTS `tb_student_infostudent`;
+CREATE TABLE `tb_student_infostudent` (
 `STUDENT_ID` varchar(100) NOT NULL,
     `STUDENT_NO` varchar(255) DEFAULT NULL COMMENT '学生学号',
     `NAME` varchar(255) DEFAULT NULL COMMENT '学生名称',

@@ -1,10 +1,10 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `TB_CLASS_INFOCLASSINFO`
+-- Table structure for `tb_class_infoclassinfo`
 -- ----------------------------
-DROP TABLE IF EXISTS `TB_CLASS_INFOCLASSINFO`;
-CREATE TABLE `TB_CLASS_INFOCLASSINFO` (
+DROP TABLE IF EXISTS `tb_class_infoclassinfo`;
+CREATE TABLE `tb_class_infoclassinfo` (
 `CLASSINFO_ID` varchar(100) NOT NULL,
     `KINDERGARTEN_ID` varchar(255) DEFAULT NULL COMMENT '园区名称',
     `CLASS_NAME` varchar(255) DEFAULT NULL COMMENT '班级名称',
