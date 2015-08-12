@@ -17,6 +17,7 @@ hs_err_pid*
 .project
 .mymetadata
 .idea/
+.git/
 .settings/
 .myeclipse/
 /WebRoot/WEB-INF/classes/*

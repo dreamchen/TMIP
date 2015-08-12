@@ -5,7 +5,7 @@
 	
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
-		insert into TB_ORG(
+		insert into tb_org(
 			NAME,	
 			CODE,	
 			P_ID,
@@ -51,7 +51,7 @@
 	
 	<!-- 删除-->
 	<delete id="delete" parameterType="pd">
-		delete from TB_ORG
+		delete from tb_org
 		where 
 			ORG_ID = #{ORG_ID}
 	</delete>
@@ -59,7 +59,7 @@
 	
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">
-		update  TB_ORG
+		update  tb_org
 			set 
 				NAME = #{NAME},
 				CODE = #{CODE},
@@ -108,7 +108,7 @@
 			DEFAULTTHREE,	
 			ORG_ID
 		from 
-			TB_ORG
+			tb_org
 		where 
 			ORG_ID = #{ORG_ID}
 	</select>
@@ -137,9 +137,9 @@
 				a.DEFAULTTHREE,	
 				a.ORG_ID
 		from 
-				TB_ORG a
+				tb_org a
 		left join
-			TB_ORG b 
+			tb_org b
 		on  a.P_ID = b.ORG_ID 
 		where 
 		    a.P_ID = #{pd.P_ID}
@@ -172,9 +172,9 @@
 				a.DEFAULTTHREE,	
 				a.ORG_ID
 		from 
-				TB_ORG a
+				tb_org a
 		left join
-			TB_ORG b 
+			tb_org b
 		on  a.P_ID = b.ORG_ID 
 		where 
 		    a.P_ID = #{pd.P_ID}
@@ -189,7 +189,7 @@
 		select 
 			count(ORG_ID) ZS
 		from 
-			TB_ORG
+			tb_org
 		where 
 			P_ID = #{ORG_ID}
 	</select>
@@ -199,7 +199,7 @@
 		select 
 			ORG_ID
 		from 
-			TB_ORG
+			tb_org
 		where 
 			CODE = #{CODE}
 		<if test="ORG_ID != null and ORG_ID != ''">
@@ -209,7 +209,7 @@
 	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
-		delete from TB_ORG
+		delete from tb_org
 		where 
 			ORG_ID in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
@@ -220,16 +220,16 @@
 <!-- 自定义开始 -->	
 	<!-- 查询所有节点 -->
 	<select id="selectOrgTree" parameterType="page" resultType="pd">
-		select * from TB_ORG
+		select * from tb_org
 	</select>
 	
 	<!-- 查询此节点的是否有子集 -->
 	<select id="hasSonId" parameterType="String" resultType="int">
-		select count(*) from TB_ORG where P_ID = #{item}
+		select count(*) from tb_org where P_ID = #{item}
 	</select>
 	<!-- 查询此节点的子集 -->
 	<select id="selectSonOrgID" parameterType="String" resultType="pd">
-		select ORG_ID from TB_ORG where P_ID = #{P_ID}
+		select ORG_ID from tb_org where P_ID = #{P_ID}
 	</select>
 	
 	<!-- 查询此节点上一级节点信息-->
@@ -254,12 +254,12 @@
 				DEFAULTTWO,	
 				DEFAULTTHREE,	
 				ORG_ID
-				from TB_ORG where ORG_ID =(select P_ID from tb_org where org_ID=#{ORG_ID}) 
+				from tb_org where ORG_ID =(select P_ID from tb_org where org_ID=#{ORG_ID})
 	</select>
 	
 	<!-- 查询节点 -->
 	<select id="listAllParentOrg" parameterType="pd" resultType="pd">
-		select * from TB_ORG where 1=1
+		select * from tb_org where 1=1
 		<if test="ORG_ID != null and ORG_ID != ''">
 			and ORG_ID != #{ORG_ID} 
 		</if>
@@ -268,7 +268,7 @@
 	</select>
 
     <select id="listSubOrgByParentId" parameterType="String" resultType="pd">
-		select  * from TB_ORG
+		select  * from tb_org
 		where P_ID = #{pid} order by Orders 
 	</select>
 	

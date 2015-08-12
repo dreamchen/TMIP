@@ -5,7 +5,7 @@
 
     <!-- 新增-->
     <insert id="save" parameterType="pd">
-		insert into WEIXIN_IMGMSG(
+		insert into weixin_imgmsg(
 			KEYWORD,	
 			CREATETIME,	
 			STATUS,	
@@ -87,7 +87,7 @@
 
     <!-- 删除-->
     <delete id="delete" parameterType="pd">
-		delete from WEIXIN_IMGMSG
+		delete from weixin_imgmsg
 		where 
 			IMGMSG_ID = #{IMGMSG_ID}
 	</delete>
@@ -95,7 +95,7 @@
 
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
-		update  WEIXIN_IMGMSG
+		update  weixin_imgmsg
 			set 
 				KEYWORD = #{KEYWORD},
 				STATUS = #{STATUS},
@@ -179,7 +179,7 @@
 			TOURL8,	
 			IMGMSG_ID
 		from 
-			WEIXIN_IMGMSG
+			weixin_imgmsg
 		where 
 			IMGMSG_ID = #{IMGMSG_ID}
 	</select>
@@ -190,7 +190,7 @@
         select
         *
         from
-        WEIXIN_IMGMSG
+        weixin_imgmsg
         where
         KEYWORD = #{KEYWORD}
         <if test="IMGMSG_ID != null and IMGMSG_ID != ''">
@@ -243,7 +243,7 @@
         a.TOURL8,
         a.IMGMSG_ID
         from
-        WEIXIN_IMGMSG a
+        weixin_imgmsg a
         where
         1=1
         <if test="pd.KEYWORD != null and pd.KEYWORD != ''"><!-- 关键词检索 -->
@@ -296,12 +296,12 @@
 				a.TOURL8,	
 				a.IMGMSG_ID
 		from 
-				WEIXIN_IMGMSG a
+				weixin_imgmsg a
 	</select>
 
     <!-- 批量删除 -->
     <delete id="deleteAll" parameterType="String">
-        delete from WEIXIN_IMGMSG
+        delete from weixin_imgmsg
         where
         IMGMSG_ID in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">

@@ -5,7 +5,7 @@
 
     <!-- 新增-->
     <insert id="save" parameterType="pd">
-        insert into TB_STUDENT_INFOSTUDENT(
+        insert into tb_student_infostudent(
     STUDENT_NO,
     NAME,
     BIRTHDAY,
@@ -35,7 +35,7 @@
 
     <!-- 删除-->
     <delete id="delete" parameterType="pd">
-        delete from TB_STUDENT_INFOSTUDENT
+        delete from tb_student_infostudent
         where
     STUDENT_ID = #{STUDENT_ID}
     </delete>
@@ -43,7 +43,7 @@
 
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
-        update  TB_STUDENT_INFOSTUDENT
+        update  tb_student_infostudent
         set
         STUDENT_NO = #{STUDENT_NO},
         NAME = #{NAME},
@@ -76,7 +76,7 @@
     REMARK,
     STUDENT_ID
         from
-    TB_STUDENT_INFOSTUDENT
+    tb_student_infostudent
         where
     STUDENT_ID = #{STUDENT_ID}
     </select>
@@ -97,7 +97,7 @@
         a.REMARK,
         a.STUDENT_ID
         from
-    TB_STUDENT_INFOSTUDENT a 
+    tb_student_infostudent a
 LEFT JOIN sys_dictionaries b on a.gender=b.ZD_ID 
 LEFT JOIN sys_dictionaries c on a.BLOOD_TYPE=c.ZD_ID
     </select>
@@ -117,14 +117,14 @@ LEFT JOIN sys_dictionaries c on a.BLOOD_TYPE=c.ZD_ID
         a.REMARK,
         a.STUDENT_ID
         from
-    TB_STUDENT_INFOSTUDENT a 
+    tb_student_infostudent a
 LEFT JOIN sys_dictionaries b on a.gender=b.ZD_ID 
 LEFT JOIN sys_dictionaries c on a.BLOOD_TYPE=c.ZD_ID
     </select>
 
     <!-- 批量删除 -->
     <delete id="deleteAll" parameterType="String">
-        delete from TB_STUDENT_INFOSTUDENT
+        delete from tb_student_infostudent
         where
     STUDENT_ID in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">

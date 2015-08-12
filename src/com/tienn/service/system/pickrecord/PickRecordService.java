@@ -1,4 +1,4 @@
-package com.tienn.service.${packageName}.${objectNameLower};
+package com.tienn.service.system.pickrecord;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import com.tienn.entity.Page;
 import com.tienn.util.PageData;
 
 
-@Service("${objectNameLower}Service")
-public class ${objectName}Service {
+@Service("pickrecordService")
+public class PickRecordService {
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -21,49 +21,49 @@ public class ${objectName}Service {
 	* 新增
 	*/
 	public void save(PageData pd)throws Exception{
-		dao.save("${objectName}Mapper.save", pd);
+		dao.save("PickRecordMapper.save", pd);
 	}
 	
 	/*
 	* 删除
 	*/
 	public void delete(PageData pd)throws Exception{
-		dao.delete("${objectName}Mapper.delete", pd);
+		dao.delete("PickRecordMapper.delete", pd);
 	}
 	
 	/*
 	* 修改
 	*/
 	public void edit(PageData pd)throws Exception{
-		dao.update("${objectName}Mapper.edit", pd);
+		dao.update("PickRecordMapper.edit", pd);
 	}
 	
 	/*
 	*列表
 	*/
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("${objectName}Mapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("PickRecordMapper.datalistPage", page);
 	}
 	
 	/*
 	*列表(全部)
 	*/
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("${objectName}Mapper.listAll", pd);
+		return (List<PageData>)dao.findForList("PickRecordMapper.listAll", pd);
 	}
 	
 	/*
 	* 通过id获取数据
 	*/
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("${objectName}Mapper.findById", pd);
+		return (PageData)dao.findForObject("PickRecordMapper.findById", pd);
 	}
 	
 	/*
 	* 批量删除
 	*/
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
-		dao.delete("${objectName}Mapper.deleteAll", ArrayDATA_IDS);
+		dao.delete("PickRecordMapper.deleteAll", ArrayDATA_IDS);
 	}
 	
 }

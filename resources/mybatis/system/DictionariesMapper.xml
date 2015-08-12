@@ -6,7 +6,7 @@
 
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
-		update  SYS_DICTIONARIES
+		update  sys_dictionaries
 			set NAME    = #{NAME},
 				ORDY_BY = #{ORDY_BY},
 				BIANMA  = #{BIANMA},
@@ -26,14 +26,14 @@
 			JB,
 			P_BM
 		from 
-			SYS_DICTIONARIES
+			sys_dictionaries
 		where 
 			ZD_ID = #{ZD_ID}
 	</select>
 
     <!-- 新增 -->
     <insert id="save" parameterType="pd">
-		insert into SYS_DICTIONARIES (
+		insert into sys_dictionaries (
 			ZD_ID,
 			NAME,
 			BIANMA,
@@ -62,9 +62,9 @@
         z1.JB,
         z1.P_BM,
         z2.NAME PNAME
-        from SYS_DICTIONARIES z1
+        from sys_dictionaries z1
         left join
-        SYS_DICTIONARIES z2
+        sys_dictionaries z2
         on z1.PARENT_ID = z2.ZD_ID
         where
         z1.PARENT_ID = #{pd.PARENT_ID}
@@ -79,7 +79,7 @@
 		select 
 			count(ZD_ID) ZS
 		from 
-			SYS_DICTIONARIES
+			sys_dictionaries
 		where 
 			PARENT_ID = #{ZD_ID}
 	</select>
@@ -89,7 +89,7 @@
         select
         ZD_ID
         from
-        SYS_DICTIONARIES
+        sys_dictionaries
         where
         BIANMA = #{BIANMA}
         <if test="ZD_ID != null and ZD_ID != ''">
@@ -99,7 +99,7 @@
 
     <!-- 删除用户 -->
     <delete id="delete" parameterType="pd">
-		delete from SYS_DICTIONARIES 
+		delete from sys_dictionaries
 		where 
 			ZD_ID = #{ZD_ID}
 	</delete>
@@ -107,14 +107,14 @@
 	<!-- 根据编码查询字典所有子项 (不包含主项'_%')-->
 	<select id="findDictListByBM" parameterType="pd" resultType="pd">
 		select * from 
-			SYS_DICTIONARIES 
+			sys_dictionaries
 		where P_BM LIKE CONCAT(CONCAT('', #{P_BM}),'_%')
 	</select>
 	
 	<!-- 根据编码查询字典所有子项 (不包含主项'_%')-->
 	<select id="findDictListByMyBM" parameterType="String" resultType="pd">
 		select zd_id,name,substring_index(p_bm, '_', 1) as bm from 
-			SYS_DICTIONARIES 
+			sys_dictionaries
 		where P_BM LIKE CONCAT(CONCAT('', #{P_BM}),'_%')
 	</select>
 	

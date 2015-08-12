@@ -1,4 +1,4 @@
-package com.tienn.controller.${packageName}.${objectNameLower};
+package com.tienn.controller.system.pickrecord;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -31,42 +31,33 @@ import com.tienn.util.Const;
 import com.tienn.util.PageData;
 import com.tienn.util.Tools;
 import com.tienn.util.Jurisdiction;
-import com.tienn.service.${packageName}.${objectNameLower}.${objectName}Service;
+import com.tienn.service.system.pickrecord.PickRecordService;
 
 /** 
- * 类名称：${objectName}Controller
+ * 类名称：PickRecordController
  * @author Erlei Chen
- * @date ${nowDate?string("yyyy-MM-dd")}
+ * @date 2015-08-02
  */
 @Controller
-@RequestMapping(value="/${objectNameLower}")
-public class ${objectName}Controller extends BaseController {
+@RequestMapping(value="/pickrecord")
+public class PickRecordController extends BaseController {
 	
-	String menuUrl = "${objectNameLower}/list.do"; //菜单地址(权限用)
-	@Resource(name="${objectNameLower}Service")
-	private ${objectName}Service ${objectNameLower}Service;
+	String menuUrl = "pickrecord/list.do"; //菜单地址(权限用)
+	@Resource(name="pickrecordService")
+	private PickRecordService pickrecordService;
 	
 	/**
 	 * 新增
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, "新增${objectName}");
+		logBefore(logger, "新增PickRecord");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("${objectNameUpper}_ID", this.get32UUID());	//主键
-<#list fieldList as var>
-	<#if var[3] == "否">
-		<#if var[1] == 'Date'>
-		pd.put("${var[0]}", Tools.date2Str(new Date()));	//${var[2]}
-		<#else>
-		pd.put("${var[0]}", "${var[4]?replace("无","")}");	//${var[2]}
-		</#if>
-	</#if>
-</#list>
-		${objectNameLower}Service.save(pd);
+		pd.put("PICKRECORD_ID", this.get32UUID());	//主键
+		pickrecordService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -77,12 +68,12 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out){
-		logBefore(logger, "删除${objectName}");
+		logBefore(logger, "删除PickRecord");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		try{
 			pd = this.getPageData();
-			${objectNameLower}Service.delete(pd);
+			pickrecordService.delete(pd);
 			out.write("success");
 			out.close();
 		} catch(Exception e){
@@ -96,12 +87,12 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, "修改${objectName}");
+		logBefore(logger, "修改PickRecord");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		${objectNameLower}Service.edit(pd);
+		pickrecordService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -112,15 +103,15 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page){
-		logBefore(logger, "列表${objectName}");
+		logBefore(logger, "列表PickRecord");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		try{
 			pd = this.getPageData();
 			page.setPd(pd);
-			List<PageData>	varList = ${objectNameLower}Service.list(page);	//列出${objectName}列表
-			mv.setViewName("${packageName}/${objectNameLower}/${objectNameLower}_list");
+			List<PageData>	varList = pickrecordService.list(page);	//列出PickRecord列表
+			mv.setViewName("system/pickrecord/pickrecord_list");
 			mv.addObject("varList", varList);
 			mv.addObject("pd", pd);
 			mv.addObject(Const.SESSION_QX,this.getHC());	//按钮权限
@@ -135,12 +126,14 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/goAdd")
 	public ModelAndView goAdd(){
-		logBefore(logger, "去新增${objectName}页面");
+		logBefore(logger, "去新增PickRecord页面");
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		try {
-			mv.setViewName("${packageName}/${objectNameLower}/${objectNameLower}_edit");
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			pd.put("PICK_DATETIME",sf.format(new Date()));
+			mv.setViewName("system/pickrecord/pickrecord_edit");
 			mv.addObject("msg", "save");
 			mv.addObject("pd", pd);
 		} catch (Exception e) {
@@ -154,13 +147,13 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/goEdit")
 	public ModelAndView goEdit(){
-		logBefore(logger, "去修改${objectName}页面");
+		logBefore(logger, "去修改PickRecord页面");
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		try {
-			pd = ${objectNameLower}Service.findById(pd);	//根据ID读取
-			mv.setViewName("${packageName}/${objectNameLower}/${objectNameLower}_edit");
+			pd = pickrecordService.findById(pd);	//根据ID读取
+			mv.setViewName("system/pickrecord/pickrecord_edit");
 			mv.addObject("msg", "edit");
 			mv.addObject("pd", pd);
 		} catch (Exception e) {
@@ -175,7 +168,7 @@ public class ${objectName}Controller extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() {
-		logBefore(logger, "批量删除${objectName}");
+		logBefore(logger, "批量删除PickRecord");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "dell")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -185,7 +178,7 @@ public class ${objectName}Controller extends BaseController {
 			String DATA_IDS = pd.getString("DATA_IDS");
 			if(null != DATA_IDS && !"".equals(DATA_IDS)){
 				String ArrayDATA_IDS[] = DATA_IDS.split(",");
-				${objectNameLower}Service.deleteAll(ArrayDATA_IDS);
+				pickrecordService.deleteAll(ArrayDATA_IDS);
 				pd.put("msg", "ok");
 			}else{
 				pd.put("msg", "no");
@@ -206,7 +199,7 @@ public class ${objectName}Controller extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel(){
-		logBefore(logger, "导出${objectName}到excel");
+		logBefore(logger, "导出PickRecord到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
@@ -214,21 +207,35 @@ public class ${objectName}Controller extends BaseController {
 		try{
 			Map<String,Object> dataMap = new HashMap<String,Object>();
 			List<String> titles = new ArrayList<String>();
-	<#list fieldList as var>
-			titles.add("${var[2]}");	//${var_index+1}
-	</#list>
+			titles.add("学生姓名");	//1
+			titles.add("接送时间");	//2
+			titles.add("接送人ID");	//3
+			titles.add("接送人名称");	//4
+			titles.add("是否代接");	//5
+			titles.add("代理人身份证号");	//6
+			titles.add("代理人姓名");	//7
+			titles.add("代理人照片");	//8
+			titles.add("代理人身份证照片");	//9
+			titles.add("委托详情");	//10
+			titles.add("0:送 1:接");	//11
+			titles.add("数据状态");	//12
 			dataMap.put("titles", titles);
-			List<PageData> varOList = ${objectNameLower}Service.listAll(pd);
+			List<PageData> varOList = pickrecordService.listAll(pd);
 			List<PageData> varList = new ArrayList<PageData>();
 			for(int i=0;i<varOList.size();i++){
 				PageData vpd = new PageData();
-	<#list fieldList as var>
-			<#if var[1] == 'Integer'>
-				vpd.put("var${var_index+1}", varOList.get(i).get("${var[0]}").toString());	//${var_index+1}
-			<#else>
-				vpd.put("var${var_index+1}", varOList.get(i).getString("${var[0]}"));	//${var_index+1}
-			</#if>
-	</#list>
+				vpd.put("var1", varOList.get(i).getString("NAME"));	//1
+				vpd.put("var2", varOList.get(i).getString("PICK_DATETIME"));	//2
+				vpd.put("var3", varOList.get(i).getString("PICK_PEOPLE_ID"));	//3
+				vpd.put("var4", varOList.get(i).getString("PICK_PEOPLE_NAME"));	//4
+				vpd.put("var5", varOList.get(i).getString("IS_ENTRUST"));	//5
+				vpd.put("var6", varOList.get(i).getString("ENTRUST_CARD"));	//6
+				vpd.put("var7", varOList.get(i).getString("ENTRUST_NAME"));	//7
+				vpd.put("var8", varOList.get(i).getString("ENTRUST_PHOTO"));	//8
+				vpd.put("var9", varOList.get(i).getString("ENTRUST_CARD_PHOTO"));	//9
+				vpd.put("var10", varOList.get(i).getString("ENTRUST_INFO"));	//10
+				vpd.put("var11", varOList.get(i).getString("TYPE"));	//11
+				vpd.put("var12", varOList.get(i).getString("STATUS"));	//12
 				varList.add(vpd);
 			}
 			dataMap.put("varList", varList);

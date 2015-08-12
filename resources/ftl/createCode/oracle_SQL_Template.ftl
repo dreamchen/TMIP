@@ -4,13 +4,13 @@
 -- DROP TABLE "C##NEWO"."${tabletop}${objectNameUpper}";
 CREATE TABLE "C##NEWO"."${tabletop}${objectNameUpper}" (
 <#list fieldList as var>
-    <#if var[1] == 'Integer'>
-    "${var[0]}" NUMBER(10) NULL ,
-    <#else>
-    "${var[0]}" VARCHAR2(255 BYTE) NULL ,
-    </#if>
+	<#if var[1] == 'Integer'>
+	"${var[0]}" NUMBER(10) NULL ,
+	<#else>
+	"${var[0]}" VARCHAR2(255 BYTE) NULL ,
+	</#if>
 </#list>
-"${objectNameUpper}_ID" VARCHAR2(100 BYTE) NOT NULL
+	"${objectNameUpper}_ID" VARCHAR2(100 BYTE) NOT NULL 
 )
 LOGGING
 NOCOMPRESS

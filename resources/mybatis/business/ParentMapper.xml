@@ -5,7 +5,7 @@
 
     <!-- 新增-->
     <insert id="save" parameterType="pd">
-        insert into TB_PARENT_INFOPARENT(
+        insert into tb_parent_infoparent(
     NAME,
     STUDENT_ID,
     RELATION,
@@ -31,7 +31,7 @@
 
     <!-- 删除-->
     <delete id="delete" parameterType="pd">
-        delete from TB_PARENT_INFOPARENT
+        delete from tb_parent_infoparent
         where
     PARENT_ID = #{PARENT_ID}
     </delete>
@@ -39,7 +39,7 @@
 
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
-        update  TB_PARENT_INFOPARENT
+        update  tb_parent_infoparent
         set
         NAME = #{NAME},
         RELATION = #{RELATION},
@@ -67,7 +67,7 @@
     REMARK,
     PARENT_ID
         from
-    TB_PARENT_INFOPARENT
+    tb_parent_infoparent
         where
     PARENT_ID = #{PARENT_ID}
     </select>
@@ -112,7 +112,7 @@
 
     <!-- 批量删除 -->
     <delete id="deleteAll" parameterType="String">
-        delete from TB_PARENT_INFOPARENT
+        delete from tb_parent_infoparent
         where
     PARENT_ID in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">

@@ -5,7 +5,7 @@
 
 	<!-- 新增 -->
 	<insert id="save" parameterType="pd">
-		insert into TB_CLASS_INFOCLASSINFO(
+		insert into tb_class_infoclassinfo(
 		KINDERGARTEN_ID,
 		CLASS_NAME,
 		QUANTITY,
@@ -41,7 +41,7 @@
 
 	<!-- 删除 -->
 	<delete id="delete" parameterType="pd">
-		delete from TB_CLASS_INFOCLASSINFO
+		delete from tb_class_infoclassinfo
 		where
 		CLASSINFO_ID = #{CLASSINFO_ID}
 	</delete>
@@ -49,7 +49,7 @@
 
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">
-		update TB_CLASS_INFOCLASSINFO
+		update tb_class_infoclassinfo
 		set
 		KINDERGARTEN_ID = #{KINDERGARTEN_ID},
 		CLASS_NAME = #{CLASS_NAME},
@@ -88,7 +88,7 @@
 		REMARK,
 		CLASSINFO_ID
 		from
-		TB_CLASS_INFOCLASSINFO
+		tb_class_infoclassinfo
 		where
 		CLASSINFO_ID = #{CLASSINFO_ID}
 	</select>
@@ -111,7 +111,7 @@
 		REMARK,
 		CLASSINFO_ID
 		from
-		TB_CLASS_INFOCLASSINFO
+		tb_class_infoclassinfo
 		where
 		KINDERGARTEN_ID = #{KINDERGARTEN_ID}
 	</select>
@@ -135,7 +135,7 @@
 		a.REMARK,
 		a.CLASSINFO_ID
 		from
-		TB_CLASS_INFOCLASSINFO a
+		tb_class_infoclassinfo a
 	</select>
 
 	<!-- 列表(全部) -->
@@ -156,12 +156,12 @@
 		a.REMARK,
 		a.CLASSINFO_ID
 		from
-		TB_CLASS_INFOCLASSINFO a
+		tb_class_infoclassinfo a
 	</select>
 
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
-		delete from TB_CLASS_INFOCLASSINFO
+		delete from tb_class_infoclassinfo
 		where
 		CLASSINFO_ID in
 		<foreach item="item" index="index" collection="array" open="("

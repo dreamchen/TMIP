@@ -7,14 +7,14 @@
 
     <!-- 换皮肤-->
     <update id="setSKIN" parameterType="pd" flushCache="false">
-		update SYS_USER set 
+		update sys_user set
 		SKIN = #{SKIN} 
 		where USERNAME = #{USERNAME}
 	</update>
 
     <!-- 更新登录时间 -->
     <update id="updateLastLogin" parameterType="pd" flushCache="false">
-		update SYS_USER set 
+		update sys_user set
 		LAST_LOGIN = #{LAST_LOGIN} 
 		where USER_ID = #{USER_ID}
 	</update>
@@ -22,7 +22,7 @@
     <!-- 判断用户名和密码 -->
     <select id="getUserInfo" parameterType="pd" resultType="pd"
             useCache="false"><!-- insert update delete (flushCache="true/false") -->
-        select * from SYS_USER
+        select * from sys_user
         where 1=1
         <if test="USERNAME != null and PASSWORD != null">
             and (
@@ -41,7 +41,7 @@
 
     <!-- 存入IP -->
     <update id="saveIP" parameterType="pd" flushCache="false">
-		update SYS_USER 
+		update sys_user
 			set 
 				IP = #{IP}
 			where 
@@ -50,7 +50,7 @@
 
     <!-- 修改 -->
     <update id="editU" parameterType="pd" flushCache="false">
-        update SYS_USER
+        update sys_user
         set USERNAME = #{USERNAME},
         NAME = #{NAME},
         ROLE_ID = #{ROLE_ID},
@@ -106,7 +106,7 @@
 			a.DEPT,
 			b.NAME as ORGNAME
 		from 
-			SYS_USER a,tb_org b 
+			sys_user a,tb_org b
 		where  a.DEPT=b.ORG_ID 
 			and USER_ID = #{USER_ID}
 	</select>
@@ -140,7 +140,7 @@
 		OFFICPHONE,
 		DEPT
         from
-        SYS_USER
+        sys_user
         where
         EMAIL = #{EMAIL}
         <if test="USERNAME != null and USERNAME != ''">
@@ -177,7 +177,7 @@
 		OFFICPHONE,
 		DEPT
         from
-        SYS_USER
+        sys_user
         where
         NUMBER = #{NUMBER}
         <if test="USERNAME != null and USERNAME != ''">
@@ -214,14 +214,14 @@
 			OFFICPHONE,
 			DEPT
 		from 
-			SYS_USER
+			sys_user
 		where 
 			USERNAME = #{USERNAME}
 	</select>
 
     <!-- 新增用户 -->
     <insert id="saveU" parameterType="pd" flushCache="false">
-		insert into SYS_USER (
+		insert into sys_user (
 			USER_ID,
 			USERNAME,
 			PASSWORD,
@@ -299,7 +299,7 @@
 		u.DEPT,
         r.ROLE_ID,
         r.ROLE_NAME
-        from SYS_USER u, SYS_ROLE r
+        from sys_user u, sys_role r
         where u.ROLE_ID = r.ROLE_ID
         <if test="pd.DEPT != null">
        		and u.DEPT in 
@@ -363,7 +363,7 @@
 		u.DEPT,
         r.ROLE_ID,
         r.ROLE_NAME
-        from SYS_USER u, SYS_ROLE r
+        from sys_user u, sys_role r
         where u.ROLE_ID = r.ROLE_ID
         and u.USERNAME != 'admin'
         and (r.ROLE_ID != '7' and r.PARENT_ID != '7')
@@ -395,14 +395,14 @@
 
     <!-- 删除用户 -->
     <delete id="deleteU" parameterType="pd" flushCache="false">
-		delete from SYS_USER
+		delete from sys_user
 		where 
 			USER_ID = #{USER_ID}
 	</delete>
 
     <!-- 批量删除用户 -->
     <delete id="deleteAllU" parameterType="String" flushCache="false">
-        delete from SYS_USER
+        delete from sys_user
         where
         USER_ID in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">

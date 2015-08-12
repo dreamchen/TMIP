@@ -5,7 +5,7 @@
 
     <!-- 新增-->
     <insert id="save" parameterType="pd">
-		insert into TB_USERUSER(
+		insert into tb_useruser(
 			USER_SEX,	
 			USER_AGE,	
 			USER_BIRTHDAY,	
@@ -21,7 +21,7 @@
 
     <!-- 删除-->
     <delete id="delete" parameterType="pd">
-		delete from TB_USERUSER
+		delete from tb_useruser
 		where 
 			USER_ID = #{USER_ID}
 	</delete>
@@ -29,7 +29,7 @@
 
     <!-- 修改 -->
     <update id="edit" parameterType="pd">
-		update  TB_USERUSER
+		update  tb_useruser
 			set 
 				USER_SEX = #{USER_SEX},
 				USER_AGE = #{USER_AGE},
@@ -48,7 +48,7 @@
 			USER_BIRTHDAY,	
 			USER_ID
 		from 
-			TB_USERUSER
+			tb_useruser
 		where 
 			USER_ID = #{USER_ID}
 	</select>
@@ -62,7 +62,7 @@
 				a.USER_BIRTHDAY,	
 				a.USER_ID
 		from 
-				TB_USERUSER a
+				tb_useruser a
 	</select>
 
     <!-- 列表(全部) -->
@@ -73,12 +73,12 @@
 				a.USER_BIRTHDAY,	
 				a.USER_ID
 		from 
-				TB_USERUSER a
+				tb_useruser a
 	</select>
 
     <!-- 批量删除 -->
     <delete id="deleteAll" parameterType="String">
-        delete from TB_USERUSER
+        delete from tb_useruser
         where
         USER_ID in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
